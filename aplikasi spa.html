@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanzy Spa - Konfirmasi Pemesanan</title>
+    <!-- Memuat Tailwind CSS untuk styling yang cepat dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Mengatur font utama dan background elegan */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark Purple/Navy */
+            color: #e6e6e6; /* Off-white text */
+        }
+        .header-font {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar untuk sentuhan premium */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700; /* Gold */
+            border-radius: 4px;
+        }
+        .gold-border {
+            border-color: #FFD700;
+        }
+        .gold-text {
+            color: #FFD700;
+        }
+        .btn-gold {
+            background-color: #FFD700;
+            color: #1a1a2e;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-gold:hover {
+            background-color: #e5c100;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        /* Spinner CSS */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Style untuk input date, agar seragam dengan tema gelap */
+        input[type="date"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div id="app-container" class="w-full max-w-lg p-8 space-y-8 bg-[#2a2a44] rounded-xl shadow-2xl border-2 gold-border transition-all duration-500">
+        
+        <!-- Header -->
+        <header class="text-center pb-4 border-b gold-border">
+            <h1 class="header-font text-4xl font-bold gold-text">Vanzy Spa</h1>
+            <p class="text-sm text-gray-400">Konfirmasi Pemesanan Anda</p>
+        </header>
+
+        <!-- STEP 1: Input Data Diri Lebih Komplit -->
+        <div id="step-1" class="space-y-6">
+            <h2 class="text-2xl font-semibold text-center">Langkah 1: Data Diri & Jadwal</h2>
+            <div class="space-y-4">
+                <!-- Input Nama -->
+                <div class="space-y-2">
+                    <label for="name" class="block text-sm font-medium gold-text">Nama Lengkap</label>
+                    <input type="text" id="name" placeholder="Masukkan nama Anda"
+                           class="w-full p-3 bg-[#1a1a2e] border-2 gold-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-white">
+                </div>
+                
+                <!-- Input Nomor HP Baru -->
+                <div class="space-y-2">
+                    <label for="phone" class="block text-sm font-medium gold-text">Nomor Telepon/HP</label>
+                    <input type="tel" id="phone" placeholder="Cth: 081234567890"
+                           class="w-full p-3 bg-[#1a1a2e] border-2 gold-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-white">
+                </div>
+
+                <!-- Input Tanggal Kunjungan Baru -->
+                <div class="space-y-2">
+                    <label for="visit-date" class="block text-sm font-medium gold-text">Tanggal Kunjungan</label>
+                    <input type="date" id="visit-date"
+                           class="w-full p-3 bg-[#1a1a2e] border-2 gold-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-white"
+                           min="2025-11-22"> <!-- Set tanggal minimum hari ini/sekarang -->
+                </div>
+
+            </div>
+            <button onclick="nextStep(2)" class="btn-gold w-full p-3 rounded-lg font-bold text-lg tracking-wider shadow-lg">LANJUT</button>
+        </div>
+
+        <!-- STEP 2: Pilih Paket & Pembayaran -->
+        <div id="step-2" class="space-y-6 hidden">
+            <h2 class="text-2xl font-semibold text-center">Langkah 2: Paket & Pembayaran</h2>
+            
+            <!-- Pilih Paket -->
+            <div class="space-y-4 p-4 border gold-border rounded-xl">
+                <p class="text-lg font-medium gold-text">Pilih Paket Spa:</p>
+                <!-- Paket Aurelia -->
+                <label class="flex items-center justify-between p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c]">
+                    <div class="flex items-center">
+                        <input type="radio" name="package" value="Aurelia Signature Therapy" data-price="20000" class="form-radio h-5 w-5 text-[#FFD700]" checked>
+                        <span class="ml-3 text-base">Aurelia Signature Therapy</span>
+                    </div>
+                    <span class="font-bold gold-text">20 K</span>
+                </label>
+                <!-- Paket Lumina -->
+                <label class="flex items-center justify-between p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c]">
+                    <div class="flex items-center">
+                        <input type="radio" name="package" value="Lumina Healing Touch" data-price="50000" class="form-radio h-5 w-5 text-[#FFD700]">
+                        <span class="ml-3 text-base">Lumina Healing Touch</span>
+                    </div>
+                    <span class="font-bold gold-text">50 K</span>
+                </label>
+                <!-- Paket Velora -->
+                <label class="flex items-center justify-between p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c]">
+                    <div class="flex items-center">
+                        <input type="radio" name="package" value="Velora Deep Relax" data-price="100000" class="form-radio h-5 w-5 text-[#FFD700]">
+                        <span class="ml-3 text-base">Velora Deep Relax</span>
+                    </div>
+                    <span class="font-bold gold-text">100 K</span>
+                </label>
+            </div>
+
+            <!-- Pilih Pembayaran -->
+            <div class="space-y-4 p-4 border gold-border rounded-xl">
+                <p class="text-lg font-medium gold-text">Pilih Metode Pembayaran:</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Metode Pembayaran -->
+                    <label class="p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c] flex items-center">
+                        <input type="radio" name="paymentMethod" value="Dana" class="form-radio h-5 w-5 text-[#FFD700]" checked>
+                        <span class="ml-2">Dana</span>
+                    </label>
+                    <label class="p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c] flex items-center">
+                        <input type="radio" name="paymentMethod" value="GoPay" class="form-radio h-5 w-5 text-[#FFD700]">
+                        <span class="ml-2">GoPay</span>
+                    </label>
+                    <label class="p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c] flex items-center">
+                        <input type="radio" name="paymentMethod" value="OVO" class="form-radio h-5 w-5 text-[#FFD700]">
+                        <span class="ml-2">OVO</span>
+                    </label>
+                    <label class="p-3 bg-[#1a1a2e] rounded-lg cursor-pointer hover:bg-[#3b3b5c] flex items-center">
+                        <input type="radio" name="paymentMethod" value="PayPal" class="form-radio h-5 w-5 text-[#FFD700]">
+                        <span class="ml-2">PayPal</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Ringkasan Pesanan -->
+            <div class="p-4 bg-[#1a1a2e] rounded-lg shadow-inner">
+                <p class="flex justify-between font-medium">
+                    <span>Total Tagihan:</span>
+                    <span id="total-price" class="gold-text font-bold">Rp 20.000</span>
+                </p>
+            </div>
+
+            <button onclick="nextStep(3)" class="btn-gold w-full p-3 rounded-lg font-bold text-lg tracking-wider shadow-lg">KONFIRMASI PEMBAYARAN</button>
+        </div>
+
+        <!-- STEP 3: Loading / Pemrosesan -->
+        <div id="step-3" class="space-y-6 hidden text-center">
+            <h2 class="text-2xl font-semibold gold-text">Memproses Pembayaran...</h2>
+            <div class="flex justify-center">
+                <div class="loader"></div>
+            </div>
+            <p id="loading-message" class="text-gray-400">Harap tunggu, sistem sedang memverifikasi data Anda.</p>
+            <div class="p-4 bg-[#1a1a2e] rounded-lg">
+                <p class="text-sm text-left"><span class="font-bold gold-text">Pelanggan:</span> <span id="summary-name"></span></p>
+                <p class="text-sm text-left"><span class="font-bold gold-text">Telepon:</span> <span id="summary-phone"></span></p>
+                <p class="text-sm text-left"><span class="font-bold gold-text">Tanggal:</span> <span id="summary-date"></span></p>
+                <p class="text-sm text-left"><span class="font-bold gold-text">Paket:</span> <span id="summary-package"></span></p>
+                <p class="text-sm text-left"><span class="font-bold gold-text">Bayar Via:</span> <span id="summary-payment"></span></p>
+            </div>
+        </div>
+
+        <!-- STEP 4: Selesai -->
+        <div id="step-4" class="space-y-6 hidden text-center p-6 border-4 border-green-500 bg-green-900/20 rounded-xl">
+            <!-- Ikon Centang (Contoh SVG) -->
+            <svg class="w-20 h-20 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            
+            <h2 class="text-3xl font-bold text-green-500 header-font">Pembayaran Selesai!</h2>
+            <p class="text-xl">Terima kasih, <span id="final-name" class="gold-text font-bold"></span>.</p>
+            <p class="text-gray-300">Pemesanan Anda untuk paket <span id="final-package" class="font-semibold"></span> pada tanggal <span id="final-date" class="font-semibold"></span> telah berhasil dikonfirmasi. Anda akan dihubungi oleh tim Vanzy Spa di nomor <span id="final-phone" class="font-semibold"></span>.</p>
+            
+            <button onclick="resetApp()" class="btn-gold p-3 rounded-lg font-bold text-base mt-4">Pesan Lagi</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Menginisialisasi status aplikasi
+        let currentStep = 1;
+        let userData = {
+            name: '',
+            phone: '',
+            visitDate: '',
+            package: 'Aurelia Signature Therapy',
+            price: 20000,
+            paymentMethod: 'Dana'
+        };
+
+        const steps = {
+            1: document.getElementById('step-1'),
+            2: document.getElementById('step-2'),
+            3: document.getElementById('step-3'),
+            4: document.getElementById('step-4'),
+        };
+
+        // Fungsi untuk mengkonversi angka ke format Rupiah (dengan K)
+        function formatRupiah(number) {
+            return `Rp ${number.toLocaleString('id-ID')}`;
+        }
+
+        // Fungsi untuk memformat tanggal menjadi DD-MM-YYYY
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+        }
+
+        // Fungsi untuk memperbarui total harga
+        function updatePrice() {
+            const selectedPackage = document.querySelector('input[name="package"]:checked');
+            if (selectedPackage) {
+                const price = parseInt(selectedPackage.getAttribute('data-price'));
+                userData.package = selectedPackage.value;
+                userData.price = price;
+                document.getElementById('total-price').textContent = formatRupiah(price);
+            }
+        }
+
+        // Event listeners untuk paket
+        document.querySelectorAll('input[name="package"]').forEach(input => {
+            input.addEventListener('change', updatePrice);
+        });
+
+        // Event listener untuk metode pembayaran
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                userData.paymentMethod = e.target.value;
+            });
+        });
+
+        // Set tanggal minimum untuk hari ini
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        document.getElementById('visit-date').min = `${yyyy}-${mm}-${dd}`;
+
+        // Set harga awal saat halaman dimuat
+        updatePrice();
+
+        // Fungsi utama untuk pindah langkah
+        function nextStep(step) {
+            // Sembunyikan semua langkah
+            Object.values(steps).forEach(s => s.classList.add('hidden'));
+
+            if (step === 2) {
+                // Dari langkah 1 ke 2
+                const nameInput = document.getElementById('name');
+                const phoneInput = document.getElementById('phone');
+                const dateInput = document.getElementById('visit-date');
+                let isValid = true;
+
+                // Validasi Nama
+                if (!nameInput.value.trim()) {
+                    nameInput.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    nameInput.style.borderColor = '#FFD700';
+                }
+
+                // Validasi Telepon
+                if (!phoneInput.value.trim() || phoneInput.value.trim().length < 8) {
+                    phoneInput.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    phoneInput.style.borderColor = '#FFD700';
+                }
+                
+                // Validasi Tanggal
+                if (!dateInput.value.trim()) {
+                    dateInput.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    dateInput.style.borderColor = '#FFD700';
+                }
+
+
+                if (!isValid) {
+                    steps[1].classList.remove('hidden');
+                    return; // Gagal pindah jika ada input kosong/tidak valid
+                }
+                
+                // Simpan data
+                userData.name = nameInput.value.trim();
+                userData.phone = phoneInput.value.trim();
+                userData.visitDate = dateInput.value.trim();
+
+                steps[2].classList.remove('hidden');
+
+            } else if (step === 3) {
+                // Dari langkah 2 ke 3 (Loading)
+                updatePrice(); // Pastikan harga dan paket terbaru terambil
+                userData.paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+                // Tampilkan ringkasan data di layar loading
+                document.getElementById('summary-name').textContent = userData.name;
+                document.getElementById('summary-phone').textContent = userData.phone;
+                document.getElementById('summary-date').textContent = formatDate(userData.visitDate);
+                document.getElementById('summary-package').textContent = `${userData.package} (${formatRupiah(userData.price)})`;
+                document.getElementById('summary-payment').textContent = userData.paymentMethod;
+
+                steps[3].classList.remove('hidden');
+
+                // Simulasi loading 5 detik
+                let remainingTime = 5;
+                const loadingMessage = document.getElementById('loading-message');
+                loadingMessage.textContent = `Pengecekan sistem. Tunggu ${remainingTime} detik...`;
+
+                const loadingInterval = setInterval(() => {
+                    remainingTime--;
+                    if (remainingTime > 0) {
+                        loadingMessage.textContent = `Pengecekan sistem. Tunggu ${remainingTime} detik...`;
+                    } else {
+                        clearInterval(loadingInterval);
+                        nextStep(4); // Lanjut ke langkah Selesai
+                    }
+                }, 1000);
+
+            } else if (step === 4) {
+                // Langkah Selesai
+                document.getElementById('final-name').textContent = userData.name;
+                document.getElementById('final-package').textContent = userData.package;
+                document.getElementById('final-date').textContent = formatDate(userData.visitDate);
+                document.getElementById('final-phone').textContent = userData.phone;
+
+                steps[4].classList.remove('hidden');
+            }
+        }
+
+        // Fungsi untuk mengulang aplikasi
+        function resetApp() {
+            userData = { name: '', phone: '', visitDate: '', package: 'Aurelia Signature Therapy', price: 20000, paymentMethod: 'Dana' };
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('visit-date').value = '';
+            document.querySelector('input[name="package"][value="Aurelia Signature Therapy"]').checked = true;
+            document.querySelector('input[name="paymentMethod"][value="Dana"]').checked = true;
+            updatePrice();
+            
+            Object.values(steps).forEach(s => s.classList.add('hidden'));
+            steps[1].classList.remove('hidden');
+        }
+
+        // Pastikan langkah 1 ditampilkan saat start
+        document.addEventListener('DOMContentLoaded', () => {
+            steps[1].classList.remove('hidden');
+        });
+
+    </script>
+</body>
+</html>
